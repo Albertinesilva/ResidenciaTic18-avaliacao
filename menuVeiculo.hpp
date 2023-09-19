@@ -8,7 +8,7 @@ using namespace std;
 void mostraMenuVeiculo();
 void menuVeiculo(vector<Veiculo> &listaVeiculo);
 
-void recebeEscolhaVeiculo(int &escolha);
-void realizaEscolhaVeiculo(int escolha, vector<Veiculo> &listaVeiculo);
+int recebeEscolhaVeiculo();
+void realizaEscolhaVeiculo(const int &escolha, vector<Veiculo> &listaVeiculo);
 
 #endif

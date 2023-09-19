@@ -8,7 +8,7 @@ using namespace std;
 typedef struct{
     int dia,mes,ano;
 
-    void preencheData(string data){
+    void preencheData(const string &data){
         armazenaVerificaSepara(dia,mes,ano,data);
     }
 

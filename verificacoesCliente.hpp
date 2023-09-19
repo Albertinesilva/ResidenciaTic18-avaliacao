@@ -5,9 +5,9 @@
 #include "utils.hpp"
 using namespace std;
 
-bool verificaCPF(string cpf);
-bool verificaCNH(string cnh);
-bool verificaNome(string nome);
-bool verificaDataNascimento(Data dataNascimento);
+bool verificaCPF(const string &cpf);
+bool verificaCNH(const string &cnh);
+bool verificaNome(const string &nome);
+bool verificaDataNascimento(const Data &dataNascimento);
 
 #endif

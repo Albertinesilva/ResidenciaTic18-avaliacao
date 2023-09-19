@@ -1,7 +1,8 @@
 #include "verificacoesCliente.hpp"
 #include<ctime>
+#include<cctype>
 
-bool verificaCPF(string cpf){
+bool verificaCPF(const string &cpf){
 
     if (cpf.length() != 11){
         cout << "CPF inválido" << endl;
@@ -47,7 +48,7 @@ bool verificaCPF(string cpf){
     return true;
 }
 
-bool verificaCNH(string cnh){
+bool verificaCNH(const string &cnh){
     if (cnh.length() != 10){
         cout << "CNH inválida" << endl;
         pause();
@@ -61,7 +62,7 @@ bool verificaCNH(string cnh){
     return true;
 }
 
-bool verificaDataNascimento(Data dataNascimento){
+bool verificaDataNascimento(const Data &dataNascimento){
 
     time_t tempoAtual = time(0);
     tm *dataHoraAtual = localtime(&tempoAtual);
@@ -85,10 +86,10 @@ bool verificaDataNascimento(Data dataNascimento){
 
 }   
 
-bool verificaNome(string nome){
-    for(int i = 0 ; i < nome.length() ; i++){
-            if((nome[i] < 40 && nome[i] >=0) || (nome[i] > 40 && nome[i] < 65) || (nome[i] > 90 && nome[i] < 97) || (nome[i] > 122 && nome[i] <=127)){
-            cout << "Nome inválido, devem conter apenas letras" << endl;
+bool verificaNome(const string &nome) {
+    for (int i = 0; i < nome.length(); i++) {
+        if (!isalpha(nome[i]) && !isspace(nome[i])) {
+            cout << "Nome inválido, devem conter apenas letras ou espaços." << endl;
             pause();
             return false;
         }

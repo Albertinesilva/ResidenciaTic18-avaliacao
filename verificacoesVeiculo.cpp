@@ -1,21 +1,20 @@
 #include "verificacoesVeiculo.hpp"
 #include<regex>
 
-bool verificaRenavan(string &renavam){
+bool verificaRenavan(const string &renavam){
 
     if (regex_match(renavam, regex("^[0-9]+$"))) {
-        return true;;
+        return true;
     }
 
     return false;
 }
 
-bool verificaPlaca(string &placa){
+bool verificaPlaca(const string &placa){
     return regex_match(placa, regex("^\\w{3}\\d{4}$"));
-
 }
 
-bool verificaRetirada(DataHora retirada){
+bool verificaRetirada(const DataHora &retirada){
     time_t tempoAtual = time(0);
     tm *dataHoraAtual = localtime(&tempoAtual);
 
@@ -56,7 +55,7 @@ bool verificaRetirada(DataHora retirada){
 }
 
 
-bool verificaEntrega(DataHora retirada, DataHora entrega){
+bool verificaEntrega(const DataHora &retirada,const DataHora &entrega){
     if(entrega.data.ano < retirada.data.ano){
         cout << "Data de entrega deve ser superior pelo menos a 1 dia, a data de retirada" << endl;
         return false;
@@ -75,6 +74,6 @@ bool verificaEntrega(DataHora retirada, DataHora entrega){
     return true;
 }
 
-bool verificaLoja(string loja){
+bool verificaLoja(const string &loja){
     return regex_match(loja, regex("^[a-zA-Z0-9 ]*$"));
 }

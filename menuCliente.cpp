@@ -17,28 +17,29 @@ void mostraMenuCliente(){
 void menuCliente(vector<Cliente> &listaClientes){
     int escolha;
     do{
-        recebeEscolha(escolha);
+        escolha = recebeEscolha();
         realizaEscolha(escolha,listaClientes);
     }while(escolha!=0);
 }
 
-void recebeEscolha(int &escolha){
+int recebeEscolha(){
+    int escolha;
     bool escolhaValida;
     do{
         mostraMenuCliente();
         cin >> escolha;
-        escolhaValida = (escolha >= 0 && escolha <= 5);
+        escolhaValida = (escolha== 0 || escolha== 1 || escolha== 2 || escolha== 3 || escolha== 4 || escolha== 5);
         if(!escolhaValida){
             limpaTela();
             cout << "------Escolha Inválida------" << endl;
             pause();
             limpaBuffer();
-
         }
     }while(!escolhaValida);
+    return escolha;
 }
 
-void realizaEscolha(int escolha, vector<Cliente> &listaClientes){
+void realizaEscolha(const int &escolha, vector<Cliente> &listaClientes){
   switch (escolha)
     {
     case 1 :

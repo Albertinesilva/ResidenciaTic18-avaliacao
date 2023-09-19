@@ -6,8 +6,8 @@ int main(){
     vector<Cliente> listaDeClientes;
     vector<Veiculo> listaDeVeiculos;
 
-    menuCliente(listaDeClientes);
-    
+    //menuCliente(listaDeClientes);
+    menuVeiculo(listaDeVeiculos);
 
     
     

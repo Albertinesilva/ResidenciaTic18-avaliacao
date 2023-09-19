@@ -10,7 +10,7 @@ void mostraMenuCliente();
 
 void menuCliente(vector<Cliente> &listaCliente);
 
-void recebeEscolha(int &escolha);
-void realizaEscolha(int escolha, vector<Cliente> &listaClientes);
+int recebeEscolha();
+void realizaEscolha(const int &escolha, vector<Cliente> &listaClientes);
 
 #endif

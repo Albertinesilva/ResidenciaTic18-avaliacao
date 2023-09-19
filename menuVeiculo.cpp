@@ -18,28 +18,31 @@ void mostraMenuVeiculo(){
 void menuVeiculo(vector<Veiculo> &listaVeiculos){
     int escolha;
     do{
-        recebeEscolhaVeiculo(escolha);
+        escolha = recebeEscolhaVeiculo();
         realizaEscolhaVeiculo(escolha,listaVeiculos);
     }while(escolha!=0);
 }
 
-void recebeEscolhaVeiculo(int &escolha){
+int recebeEscolhaVeiculo(){
+    int escolha;
     bool escolhaValida;
     do{
         mostraMenuVeiculo();
         cin >> escolha;
-        escolhaValida = (escolha >= 0 && escolha <= 5);
+        escolhaValida = (escolha== 0 || escolha== 1 || escolha== 2 || escolha== 3 || escolha== 4 || escolha== 5);
         if(!escolhaValida){
             limpaTela();
             cout << "------Escolha Inválida------" << endl;
-            pause();
+            cin.clear();
             limpaBuffer();
+            pause();
 
         }
     }while(!escolhaValida);
+    return escolha;
 }
 
-void realizaEscolhaVeiculo(int escolha, vector<Veiculo> &listaVeiculos){
+void realizaEscolhaVeiculo(const int &escolha, vector<Veiculo> &listaVeiculos){
   switch (escolha)
     {
     case 1 :

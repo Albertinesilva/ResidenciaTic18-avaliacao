@@ -6,11 +6,11 @@
 
 using namespace std;
 
-bool verificaRenavan(string &renavam);
-bool verificaPlaca(string &placa);
-bool verificaRetirada(DataHora retirada);
-bool verificaEntrega(DataHora retirada, DataHora entrega);
-bool verificaLoja(string Loja);
+bool verificaRenavan(const string &renavam);
+bool verificaPlaca(const string &placa);
+bool verificaRetirada(const DataHora &retirada);
+bool verificaEntrega(const DataHora &retirada,const DataHora &entrega);
+bool verificaLoja(const string &Loja);
 
 #endif
 

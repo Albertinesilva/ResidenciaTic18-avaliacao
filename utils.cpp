@@ -44,7 +44,7 @@ bool verificaProsseguimento(){
 
 //--------------------------------------
 
-void armazenaVerificaSepara(int &dia, int &mes, int &ano ,string data){
+void armazenaVerificaSepara(int &dia, int &mes, int &ano ,const string &data){
         do{
             separaData(dia,mes,ano,data);
             if(!verificaData(dia,mes,ano)){
@@ -57,7 +57,7 @@ void armazenaVerificaSepara(int &dia, int &mes, int &ano ,string data){
 }
 
 
-void separaData(int &dia, int &mes, int &ano , string data){
+void separaData(int &dia, int &mes, int &ano , const string &data){
     int pos1 =  data.find('/');
     int pos2 = data.find_last_of('/');
     dia = separaDia(pos1,data);
@@ -65,24 +65,24 @@ void separaData(int &dia, int &mes, int &ano , string data){
     ano = separaAno(pos2,data);
 }
 
-int separaDia(int pos1, string data){
+int separaDia(const int &pos1, const string &data){
     return stoi(data.substr(0,pos1));
 }
 
-int separaMes(int pos1, int pos2 , string data){
+int separaMes(const int &pos1, const int &pos2 , const string &data){
     return stoi(data.substr(pos1+1,pos2));
 }
 
-int separaAno(int pos2, string data){
+int separaAno(const int &pos2, const string &data){
     return stoi(data.substr(pos2+1));
 }
 
-bool anoBissexto(int ano){
+bool anoBissexto(const int &ano){
     return (ano % 4 == 0 && (ano % 100 != 0 || ano % 400 == 0)) ? true : false;
 }
 
 
-bool verificaData(int dia , int mes, int ano){
+bool verificaData(const int &dia , const int &mes, const int &ano){
 
     int diasNoMes[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -108,7 +108,7 @@ bool verificaData(int dia , int mes, int ano){
 
 }
 
-string nomeDoMes(int mes){
+string nomeDoMes(const int &mes){
     string nomes[] = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
     return nomes[mes-1];
 }
@@ -117,7 +117,7 @@ string nomeDoMes(int mes){
 //-----------------------------------------------
 
 
-void armazenaVerificaSeparaHora(int &segundos, int &minutos, int &horas ,string horario){
+void armazenaVerificaSeparaHora(int &segundos, int &minutos, int &horas ,const string &horario){
         do{
             separaHorario(segundos,minutos,horas,horario);
         if(!verificaHorario(segundos,minutos,horas)){
@@ -130,7 +130,7 @@ void armazenaVerificaSeparaHora(int &segundos, int &minutos, int &horas ,string 
 }
 
 
-void separaHorario(int &segundos, int &minutos, int &horas ,string horario){
+void separaHorario(int &segundos, int &minutos, int &horas , const string &horario){
     int pos1 =  horario.find(':');
     int pos2 = horario.find_last_of(':');
     segundos = separaSegundo(pos1,horario);
@@ -138,20 +138,20 @@ void separaHorario(int &segundos, int &minutos, int &horas ,string horario){
     horas = separaHora(pos2,horario);
 }
 
-int separaSegundo(int pos1, string data){
+int separaSegundo(const int &pos1, const string &data){
     return stoi(data.substr(0,pos1));
 }
 
-int separaMinuto(int pos1, int pos2 , string data){
+int separaMinuto(const int &pos1, const int &pos2 , const string &data){
     return stoi(data.substr(pos1+1,pos2));
 }
 
-int separaHora(int pos2, string data){
+int separaHora(const int &pos2, const string &data){
     return stoi(data.substr(pos2+1));
 }
 
 
-bool verificaHorario(int segundos , int minutos, int horas){
+bool verificaHorario(const int &segundos , const int &minutos, const int &horas){
 
     if(segundos > 59 || segundos < 0 || minutos > 59 || minutos < 0 || horas>23 || horas < 0){
         return false;

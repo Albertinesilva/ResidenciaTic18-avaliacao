@@ -89,7 +89,7 @@ void alteraCliente(vector<Cliente> &listaClientes){
                     }                       
                 case 3 :
                     if(it->inserirCNH()){
-                        cout << "CPF alterado com sucesso" << endl;
+                        cout << "CNH alterado com sucesso" << endl;
                         pause();
                         break;
                     }else{
@@ -124,7 +124,7 @@ void listarClientes(vector<Cliente> &listaClientes){
         cout << "-------------------------------" << endl;
         it->mostraCliente();
     }
-    cin.get();
+    limpaBuffer();
     cout << "-------------------------------" << endl;
     pause();
 }
@@ -140,6 +140,8 @@ void localizaCliente(vector<Cliente> &listaClientes){
         if(it->cpf == cpfParaBusca){
             cout << "-------------------------------" << endl;
             it->mostraCliente();
+            cout << "-------------------------------" << endl;
+            pause();
             return;
         }
     }
