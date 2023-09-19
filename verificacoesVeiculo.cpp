@@ -26,7 +26,6 @@ bool verificaRetirada(DataHora retirada){
     int minAtual = dataHoraAtual->tm_min;
     int horaAtual = dataHoraAtual->tm_hour; 
 
-    printf("%2d/%2d/%2d",diaAtual,mesAtual,anoAtual);
 
     if(retirada.data.ano < anoAtual){
         cout << "Não é possível agendar datas anteriores a atual" << endl; 
