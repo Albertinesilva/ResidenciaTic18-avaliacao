@@ -6,7 +6,7 @@ void insereCliente(vector<Cliente> &listaClientes){
     if(cliente.preencheCliente()){
         for(auto it=listaClientes.begin() ; it!=listaClientes.end() ; ++it){
             if(it->cpf == cliente.cpf){
-                cout << "CPF já cadastrado" << endl;;
+                cout << "CPF já cadastrado" << endl;
                 cout << "Não foi possivel inserir novo cliente" << endl;
                 cin.get();
                 pause();
