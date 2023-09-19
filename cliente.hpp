@@ -1,9 +1,7 @@
-#pragma once
+#ifndef CLIENTE_HPP
+#define CLIENTE_HPP
 #include<iostream>
-#include "verificacoes.hpp"
-#include "utils.hpp"
-#include "data.hpp"
-#include<vector>
+#include "verificacoesCliente.hpp"
 
 using namespace std;
 
@@ -115,4 +113,6 @@ typedef struct{
 
 
 }Cliente;
+
+#endif
 

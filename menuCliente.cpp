@@ -1,9 +1,7 @@
-#include "menu.hpp"
+#include "menuCliente.hpp"
 #include "listaClientes.hpp"
 
-using namespace std;
-
-void mostraMenu(){
+void mostraMenuCliente(){
     limpaTela();
     cout << "MODULO DE GESTÃO DE CLIENTES" << endl << endl;
     cout << "1. Inserir" << endl;
@@ -16,7 +14,7 @@ void mostraMenu(){
 
 }
 
-void menu(vector<Cliente> &listaClientes){
+void menuCliente(vector<Cliente> &listaClientes){
     int escolha;
     do{
         recebeEscolha(escolha);
@@ -27,7 +25,7 @@ void menu(vector<Cliente> &listaClientes){
 void recebeEscolha(int &escolha){
     bool escolhaValida;
     do{
-        mostraMenu();
+        mostraMenuCliente();
         cin >> escolha;
         escolhaValida = (escolha >= 0 && escolha <= 5);
         if(!escolhaValida){

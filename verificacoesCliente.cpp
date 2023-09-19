@@ -1,12 +1,9 @@
-#include "verificacoes.hpp"
+#include "verificacoesCliente.hpp"
 #include "utils.hpp"
-#include "menu.hpp"
-#include "listaClientes.hpp"
-#include "data.hpp"
+#include<regex>
+#include<ctime>
 
-using namespace std;
-
-bool verificaCPF(string &cpf){
+bool verificaCPF(string cpf){
 
     if (cpf.length() != 11){
         cout << "CPF inválido" << endl;
@@ -14,12 +11,8 @@ bool verificaCPF(string &cpf){
         return false;
     }
 
-    for (char c : cpf) {
-        if (!isdigit(c)){
-            cout << "CPF inválido" << endl;
-            pause();
-            return false;
-        }
+    if (regex_match(cpf, regex("^[0-9]+$"))) {
+        return false;
     }
 
     int soma = 0;
@@ -61,12 +54,9 @@ bool verificaCNH(string cnh){
         pause();
         return false;
     }
-    for (char c : cnh) {
-        if (!std::isdigit(c)){
-            cout << "CNH inválida" << endl;
-            pause();
-            return false;
-        }
+
+    if (regex_match(cnh, regex("^[0-9]+$"))) {
+        return false;
     }
     return true;
 }

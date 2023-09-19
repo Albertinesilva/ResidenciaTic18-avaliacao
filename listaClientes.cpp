@@ -1,4 +1,3 @@
-#include<iostream>
 #include "listaClientes.hpp"
 
 void insereCliente(vector<Cliente> &listaClientes){
@@ -51,6 +50,7 @@ void alteraCliente(vector<Cliente> &listaClientes){
             int escolha;
             do{
                 limpaTela();
+                cout << "-------------------------------" << endl;
                 it->mostraCliente();
                 cout << endl << "Qual dados deseja alterar? " << endl;
                 cout << "1. CPF" << endl << "2. Nome" << endl << "3. CNH" << endl << "4. Data de Nascimento" << endl << "5. Nenhum" << endl;
@@ -62,59 +62,61 @@ void alteraCliente(vector<Cliente> &listaClientes){
                     if(it->inserirCPF()){
                         cout << "CPF alterado com sucesso" << endl;
                         pause();
-                        return;
+                        break;
                     }else{
-                        cout << "Alteração de dados cancelada" << endl;
+                        cout << "Alteração de cpf cancelada" << endl;
                         pause();
-                        return;
+                        break;
                     }                       
                 case 2 :
                     if(it->inserirNome()){
                         cout << "Nome alterado com sucesso" << endl;
                         pause();
-                        return;
+                        break;
                     }else{
-                        cout << "Alteração de dados cancelada" << endl;
+                        cout << "Alteração de nome cancelada" << endl;
                         pause();
-                        return;
+                        break;
                     }                       
                 case 3 :
                     if(it->inserirCNH()){
                         cout << "CPF alterado com sucesso" << endl;
                         pause();
-                        return;
+                        break;
                     }else{
-                        cout << "Alteração de dados cancelada" << endl;
+                        cout << "Alteração de numero da cnh cancelada" << endl;
                         pause();
-                        return;
+                        break;
                     }                       
                 case 4 :
                     if(it->inserirDataNascimento()){
                         cout << "Data de Nascimento alterada com sucesso" << endl;
                         pause();
-                        return;
+                        break;
                     }else{
-                        cout << "Alteração de dados cancelada" << endl;
+                        cout << "Alteração de data de nascimento cancelada" << endl;
                         pause();
-                        return;
+                        break;
                     }   
                 case 5:
-                    cout << "Alteração de dados cancelada" << endl;
                     pause();
-                    return;
+                    break;
                 default:
                     break;
                 }
-            }while(escolha<1 || escolha>5);
+            }while(escolha!=5);
         }
     }
 
 }
 void listarClientes(vector<Cliente> &listaClientes){
+    cout << "-----------CLIENTES------------";
     for(auto it=listaClientes.begin() ; it!=listaClientes.end() ; ++it){
+        cout << "-------------------------------" << endl;
         it->mostraCliente();
     }
     cin.get();
+    cout << "-------------------------------" << endl;
     pause();
 }
 void localizaCliente(vector<Cliente> &listaClientes){
@@ -127,6 +129,7 @@ void localizaCliente(vector<Cliente> &listaClientes){
 
     for(auto it=listaClientes.begin() ; it!=listaClientes.end() ; ++it){
         if(it->cpf == cpfParaBusca){
+            cout << "-------------------------------" << endl;
             it->mostraCliente();
             return;
         }

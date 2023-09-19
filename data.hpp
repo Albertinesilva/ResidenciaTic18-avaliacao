@@ -1,8 +1,8 @@
-#pragma once
-#include<iostream>
-#include "verificacoes.hpp"
-#include "utilsData.hpp"
+#ifndef DATA_HPP
+#define DATA_HPP
 
+#include<iostream>
+#include "utils.hpp"
 using namespace std;
 
 typedef struct{
@@ -18,3 +18,5 @@ typedef struct{
     
 
 }Data;
+
+#endif
