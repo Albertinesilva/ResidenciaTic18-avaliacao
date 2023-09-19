@@ -8,8 +8,8 @@ using namespace std;
 typedef struct{
     int dia,mes,ano;
 
-    void preencheData(const string &data){
-        armazenaVerificaSepara(dia,mes,ano,data);
+    bool preencheData(string data){
+        return armazenaVerificaSepara(dia,mes,ano,data);
     }
 
     void mostraData(){

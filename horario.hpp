@@ -9,8 +9,8 @@ using namespace std;
 typedef struct{
     int segundo,minuto,hora;
 
-    void preencheHorario(string horario){
-        armazenaVerificaSeparaHora(segundo,minuto,hora,horario);
+    bool preencheHorario(string horario){
+        return armazenaVerificaSeparaHora(segundo,minuto,hora,horario);
     }
 
     void mostraHorario(){

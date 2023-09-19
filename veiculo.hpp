@@ -54,17 +54,24 @@ typedef struct{
         string data;
         string hora;
         bool dataHoraValida;
-        do{
-            cout << "Insira uma data de retirada válida(dd/mm/aaaa) : ";
-            limpaBuffer();
-            getline(cin,data);
-            retiradaInserida.data.preencheData(data);
+        do{ 
+            bool dataValida;
+            do{
+                
+                cout << "Insira uma data de retirada válida(dd/mm/aaaa) : ";
+                limpaBuffer();
+                getline(cin,data);
+                dataValida = (retiradaInserida.data.preencheData(data));
+            }while(!dataValida);
+            
+            bool horaValida;
 
-            cout << "Insira uma hora de retirada válida(hh:mm:ss) : ";
-            limpaBuffer();
-            getline(cin,hora);
-            retiradaInserida.hora.preencheHorario(hora);
-
+            do{
+                cout << "Insira uma hora de retirada válida(hh:mm:ss) : ";
+                limpaBuffer();
+                getline(cin,hora);
+                horaValida = retiradaInserida.hora.preencheHorario(hora);
+            }while(!horaValida);
 
             dataHoraValida = verificaRetirada(retiradaInserida);
 
@@ -87,16 +94,21 @@ typedef struct{
         string hora;
         bool dataHoraValida;
         do{
-            cout << "Insira uma data de entrega válida(dd/mm/aaaa) : ";
-            limpaBuffer();
-            getline(cin,data);
-            entregaInserida.data.preencheData(data);
+            bool dataValida;
+            do{
+                cout << "Insira uma data de entrega válida(dd/mm/aaaa) : ";
+                limpaBuffer();
+                getline(cin,data);
+                dataValida = entregaInserida.data.preencheData(data);
+            }while(!dataValida);
 
-            cout << "Insira uma hora de entrega válida(hh:mm:ss) : ";
-            limpaBuffer();
-            getline(cin,hora);
-            entregaInserida.hora.preencheHorario(hora);
-
+            bool horaValida;
+            do{
+                cout << "Insira uma hora de entrega válida(hh:mm:ss) : ";
+                limpaBuffer();
+                getline(cin,hora);
+                horaValida =  entregaInserida.hora.preencheHorario(hora);
+            }while(!horaValida);
 
             dataHoraValida = verificaEntrega(retirada,entregaInserida);
 
@@ -150,14 +162,14 @@ typedef struct{
     void mostraVeiculo(){
         cout << endl << "Veiculo" << endl;
         cout << "Renavan : " << renavan << endl;
-        cout << "Placa : " << placa << endl;
-        cout << "Retirada : " << endl;
+        cout << "Placa : " << placa << endl ;
+        cout << endl << "Retirada : " << endl;
         retirada.data.mostraData();
         retirada.hora.mostraHorario();
-        cout << "Entrega : " << endl;
+        cout << endl << "Entrega : " << endl;
         entrega.data.mostraData();
         entrega.hora.mostraHorario();
-        cout << "Loja de retirada : " << lojaRetirada << endl;
+        cout << endl << "Loja de retirada : " << lojaRetirada << endl;
     }
 
 

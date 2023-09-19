@@ -44,16 +44,15 @@ bool verificaProsseguimento(){
 
 //--------------------------------------
 
-void armazenaVerificaSepara(int &dia, int &mes, int &ano ,const string &data){
-        do{
-            separaData(dia,mes,ano,data);
-            if(!verificaData(dia,mes,ano)){
-                limpaTela();
-                cout << "Data invalida" << endl;
-            }else{
-                break;
-            }
-        }while(1);
+bool armazenaVerificaSepara(int &dia, int &mes, int &ano ,const string &data){
+    separaData(dia,mes,ano,data);
+    if(!verificaData(dia,mes,ano)){
+        limpaTela();
+        cout << "Data invalida" << endl;
+        return false;
+    }else{
+        return true;
+    }
 }
 
 
@@ -117,16 +116,17 @@ string nomeDoMes(const int &mes){
 //-----------------------------------------------
 
 
-void armazenaVerificaSeparaHora(int &segundos, int &minutos, int &horas ,const string &horario){
-        do{
-            separaHorario(segundos,minutos,horas,horario);
+bool armazenaVerificaSeparaHora(int &segundos, int &minutos, int &horas ,const string &horario){
+        
+        separaHorario(segundos,minutos,horas,horario);
         if(!verificaHorario(segundos,minutos,horas)){
             limpaTela();
             cout << "Hora invalida" << endl;
+            return false;
         }else{
-            break;
+            return true;
         }
-        }while(1);
+
 }
 
 
