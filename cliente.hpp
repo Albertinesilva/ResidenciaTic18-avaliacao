@@ -2,6 +2,7 @@
 #include<iostream>
 #include "verificacoes.hpp"
 #include "utils.hpp"
+#include "data.hpp"
 #include<vector>
 
 using namespace std;
@@ -9,25 +10,28 @@ using namespace std;
 typedef struct{
     string cpf;
     string nome;
-    string dataNascimento;
+    Data dataNascimento;
     string cnh;
 
-    void inserirCPF(){
+    bool inserirCPF(){
         string cpfInserido;
         bool cpfValido;
         do{
             cout << "Insira um cpf válido(apenas numeros) : ";
-            limpaBuffer();
-            getline(cin,cpfInserido);
+            cin >> cpfInserido;
             cpfValido = verificaCPF(cpfInserido);
             if(!cpfValido){
+                if(!verificaProsseguimento()){
+                    return false;
+                }
                 limpaTela();
             }
         }while(!cpfValido);
         cpf = cpfInserido;
+        return true;
     }
 
-    void inserirNome(){
+    bool inserirNome(){
         string nomeInserido;
         bool nomeValido;
         do{
@@ -36,54 +40,76 @@ typedef struct{
             getline(cin,nomeInserido);
             nomeValido = verificaNome(nomeInserido);
             if(!nomeValido){
+                if(!verificaProsseguimento()){
+                    return false;
+                }
                 limpaTela();
             }
         }while(!nomeValido);
         nome = nomeInserido;
+        return true;
     }
 
-    void inserirDataNascimento(){
-        string dataNascInserida;
+    bool inserirDataNascimento(){
+        Data dataNascInserida;
+        string data;
         bool dataNascValida;
         do{
             cout << "Insira uma data de nascimento válida : ";
             limpaBuffer();
-            getline(cin,dataNascInserida);
+            getline(cin,data);
+            dataNascInserida.preencheData(data);
             dataNascValida = verificaDataNascimento(dataNascInserida);
             if(!dataNascValida){
+                if(!verificaProsseguimento()){
+                    return false;
+                }
                 limpaTela();
             }
+
         }while(!dataNascValida);
         dataNascimento = dataNascInserida;
+        return true;
     }
 
-    void inserirCNH(){
+    bool inserirCNH(){
         string cnhInserida;
         bool cnhValida;
         do{
             cout << "Insira um número de cnh válido(apenas números) : ";
-            limpaBuffer();
-            getline(cin,cnhInserida);
-            cnhValida = verificaDataNascimento(cnhInserida);
+            cin >> cnhInserida;
+            cnhValida = verificaCNH(cnhInserida);
             if(!cnhValida){
+                if(!verificaProsseguimento()){
+                    return false;
+                }
                 limpaTela();
             }
         }while(!cnhValida);
         cnh = cnhInserida;
+        return true;
     }
 
-    void preencheCliente(){
-        inserirNome();
-        inserirCPF();
-        inserirDataNascimento();
-        inserirCNH();
+    bool preencheCliente(){
+        if(inserirNome()){
+            if(inserirCPF()){
+                if(inserirDataNascimento()){
+                    if(inserirCNH()){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     void mostraCliente(){
         cout << endl << "Cliente " << nome << endl;
         cout << "CPF : " << cpf << endl;
-        cout << "CNH : " << nome << endl;
-        cout << "Data de Nascimento : " << dataNascimento << endl; 
+        cout << "CNH : " << cnh << endl;
+        cout << "Data de Nascimento : ";
+        dataNascimento.mostraData() ;
     }
 
 

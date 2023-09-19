@@ -5,4 +5,4 @@
 void limpaTela();
 void limpaBuffer();
 void pause();
-
+bool verificaProsseguimento();

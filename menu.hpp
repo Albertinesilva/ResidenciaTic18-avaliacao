@@ -8,7 +8,7 @@
 
 
 void mostraMenu();
-void menu(vector<Cliente> listaCliente);
+void menu(vector<Cliente> &listaCliente);
 
 void recebeEscolha(int &escolha);
-void realizaEscolha(int escolha, vector<Cliente> listaClientes);
+void realizaEscolha(int escolha, vector<Cliente> &listaClientes);

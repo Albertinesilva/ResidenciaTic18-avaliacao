@@ -16,7 +16,7 @@ void mostraMenu(){
 
 }
 
-void menu(vector<Cliente> listaClientes){
+void menu(vector<Cliente> &listaClientes){
     int escolha;
     do{
         recebeEscolha(escolha);
@@ -40,7 +40,7 @@ void recebeEscolha(int &escolha){
     }while(!escolhaValida);
 }
 
-void realizaEscolha(int escolha, vector<Cliente> listaClientes){
+void realizaEscolha(int escolha, vector<Cliente> &listaClientes){
   switch (escolha)
     {
     case 1 :
