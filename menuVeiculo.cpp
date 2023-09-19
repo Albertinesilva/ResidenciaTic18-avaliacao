@@ -60,9 +60,9 @@ void realizaEscolhaVeiculo(const int &escolha, vector<Veiculo> &listaVeiculos){
     case 5 :
             localizaVeiculo(listaVeiculos);
         break;
-    case 6 :
-            exit(0);
-        break;
+    case 0 :
+            limpaTela();
+            return;
     default:
         break;
     }

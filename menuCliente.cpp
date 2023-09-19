@@ -57,9 +57,9 @@ void realizaEscolha(const int &escolha, vector<Cliente> &listaClientes){
     case 5 :
             localizaCliente(listaClientes);
         break;
-    case 6 :
-            exit(0);
-        break;
+    case 0 :
+            limpaTela();
+            return;
     default:
         break;
     }
