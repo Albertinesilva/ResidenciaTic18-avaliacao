@@ -1,24 +1,13 @@
-
+#include "verificacoesVeiculo.hpp"
+#include<regex>
 
 bool verificaRenavan(string &renavam){
-    if (renavam.size() != 11) {
-        return false;
-    }
 
     if (regex_match(renavam, regex("^[0-9]+$"))) {
-        return false;
+        return true;;
     }
 
-    // Calculo do dígito verificador
-    int peso[8] = {3, 2, 9, 8, 7, 6, 5, 4};
-    int soma = 0;
-    for (int i = 0; i < 8; i++) {
-        soma += (renavam[i] - '0') * peso[i];
-    }
-    int resto = soma % 11;
-    int digitoVerificador = (resto == 0 || resto == 1) ? 0 : 11 - resto;
-
-    return (digitoVerificador == (renavam[8] - '0'));
+    return false;
 }
 
 bool verificaPlaca(string &placa){
@@ -37,7 +26,7 @@ bool verificaRetirada(DataHora retirada){
     int minAtual = dataHoraAtual->tm_min;
     int horaAtual = dataHoraAtual->tm_hour; 
 
-    cout << horaAtual << endl;
+    printf("%2d/%2d/%2d",diaAtual,mesAtual,anoAtual);
 
     if(retirada.data.ano < anoAtual){
         cout << "Não é possível agendar datas anteriores a atual" << endl; 

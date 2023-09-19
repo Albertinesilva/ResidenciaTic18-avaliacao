@@ -4,6 +4,15 @@ void insereCliente(vector<Cliente> &listaClientes){
     limpaTela();
     Cliente cliente;
     if(cliente.preencheCliente()){
+        for(auto it=listaClientes.begin() ; it!=listaClientes.end() ; ++it){
+            if(it->cpf == cliente.cpf){
+                cout << "CPF já cadastrado" << endl;;
+                cout << "Não foi possivel inserir novo cliente" << endl;
+                cin.get();
+                pause();
+                return;
+            }
+        }
         listaClientes.push_back(cliente);
         cout << "Cliente inserido com sucesso" << endl;
         pause();

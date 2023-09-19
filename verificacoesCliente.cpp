@@ -1,6 +1,4 @@
 #include "verificacoesCliente.hpp"
-#include "utils.hpp"
-#include<regex>
 #include<ctime>
 
 bool verificaCPF(string cpf){
@@ -11,8 +9,9 @@ bool verificaCPF(string cpf){
         return false;
     }
 
-    if (regex_match(cpf, regex("^[0-9]+$"))) {
-        return false;
+    for (char c : cpf) {
+        if (!isdigit(c))
+            return false;
     }
 
     int soma = 0;
@@ -55,8 +54,9 @@ bool verificaCNH(string cnh){
         return false;
     }
 
-    if (regex_match(cnh, regex("^[0-9]+$"))) {
-        return false;
+    for (char c : cnh) {
+        if (!isdigit(c))
+            return false;
     }
     return true;
 }

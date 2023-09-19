@@ -1,8 +1,8 @@
-
+#include "menuVeiculo.hpp"
 
 using namespace std;
 
-void mostraMenuCliente(){
+void mostraMenuVeiculo(){
     limpaTela();
     cout << "MODULO DE GESTÃO DE VEICULOS" << endl << endl;
     cout << "1. Inserir" << endl;
@@ -18,12 +18,12 @@ void mostraMenuCliente(){
 void menuVeiculo(vector<Veiculo> &listaVeiculos){
     int escolha;
     do{
-        recebeEscolha(escolha);
-        realizaEscolha(escolha,listaVeiculos);
+        recebeEscolhaVeiculo(escolha);
+        realizaEscolhaVeiculo(escolha,listaVeiculos);
     }while(escolha!=0);
 }
 
-void recebeEscolha(int &escolha){
+void recebeEscolhaVeiculo(int &escolha){
     bool escolhaValida;
     do{
         mostraMenuVeiculo();
@@ -39,7 +39,7 @@ void recebeEscolha(int &escolha){
     }while(!escolhaValida);
 }
 
-void realizaEscolha(int escolha, vector<Veiculo> &listaVeiculos){
+void realizaEscolhaVeiculo(int escolha, vector<Veiculo> &listaVeiculos){
   switch (escolha)
     {
     case 1 :

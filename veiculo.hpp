@@ -1,4 +1,8 @@
+#ifndef VEICULO_HPP
+#define VEICULO_HPP
+
 #include<iostream>
+#include "verificacoesVeiculo.hpp"
 
 using namespace std;
 
@@ -51,20 +55,21 @@ typedef struct{
         string hora;
         bool dataHoraValida;
         do{
-            cout << "Insira uma data de retirada válida : ";
+            cout << "Insira uma data de retirada válida(dd/mm/aaaa) : ";
             limpaBuffer();
             getline(cin,data);
-            retirada.data.preencheData(data);
+            retiradaInserida.data.preencheData(data);
 
-            cout << "Insira uma hora de retirada válida : ";
+            cout << "Insira uma hora de retirada válida(hh:mm:ss) : ";
             limpaBuffer();
             getline(cin,hora);
-            retirada.hora.preencheHorario(hora);
+            retiradaInserida.hora.preencheHorario(hora);
 
 
             dataHoraValida = verificaRetirada(retiradaInserida);
 
             if(!dataHoraValida){
+                pause();
                 if(!verificaProsseguimento()){
                     return false;
                 }
@@ -82,20 +87,21 @@ typedef struct{
         string hora;
         bool dataHoraValida;
         do{
-            cout << "Insira uma data de entrega válida : ";
+            cout << "Insira uma data de entrega válida(dd/mm/aaaa) : ";
             limpaBuffer();
             getline(cin,data);
-            entrega.data.preencheData(data);
+            entregaInserida.data.preencheData(data);
 
-            cout << "Insira uma hora de entrega válida : ";
+            cout << "Insira uma hora de entrega válida(hh:mm:ss) : ";
             limpaBuffer();
             getline(cin,hora);
-            entrega.hora.preencheHorario(hora);
+            entregaInserida.hora.preencheHorario(hora);
 
 
-            dataHoraValida = verificaEntrega(entregaInserida);
+            dataHoraValida = verificaEntrega(retirada,entregaInserida);
 
             if(!dataHoraValida){
+                pause();
                 if(!verificaProsseguimento()){
                     return false;
                 }
@@ -158,3 +164,5 @@ typedef struct{
 
 
 }Veiculo;
+
+#endif
