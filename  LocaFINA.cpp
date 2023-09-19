@@ -69,6 +69,42 @@ struct MinhaData
         } while (!validaData());
     }
 
+    void lerDataRetirada()
+    {
+
+        do
+        {
+            cout << "\n\tInforme o dia de retirada: ";
+            cin >> dia;
+
+            cout << "\n\tInforme o mes de retirada: ";
+            cin >> mes;
+
+            cout << "\n\tInforme o ano de retirada: ";
+            cin >> ano;
+            cin.get();
+
+        } while (!validaData());
+    }
+
+    void lerDataEntrega()
+    {
+
+        do
+        {
+            cout << "\n\tInforme o dia de entrega: ";
+            cin >> dia;
+
+            cout << "\n\tInforme o mes de entrega: ";
+            cin >> mes;
+
+            cout << "\n\tInforme o ano de entrega: ";
+            cin >> ano;
+            cin.get();
+
+        } while (!validaData());
+    }
+
     void mostraData()
     {
         printf("%02d/%02d/%4d ", dia, mes, ano);
@@ -164,6 +200,79 @@ struct MinhaData
         return true;
     }
 
+    bool validaDataDeEntrega(MinhaData dataHoraRetirada, MinhaData dataHoraEntrega)
+    {
+        // Data de retirada
+        struct tm retirada = {0};
+        retirada.tm_year = dataHoraRetirada.ano; // Ano - 1900
+        retirada.tm_mon = dataHoraRetirada.mes;  // Mês (0-11)
+        retirada.tm_mday = dataHoraRetirada.dia; // Dia
+        retirada.tm_hour = 10;                   // Hora
+        retirada.tm_min = 0;                     // Minuto
+        retirada.tm_sec = 0;                     // Segundo
+
+        // Data de entrega
+        struct tm entrega = {0};
+        entrega.tm_year = dataHoraEntrega.ano; // Ano - 1900
+        entrega.tm_mon = dataHoraEntrega.mes;  // Mês (0-11)
+        entrega.tm_mday = dataHoraEntrega.dia; // Dia
+        entrega.tm_hour = 11;                  // Hora
+        entrega.tm_min = 30;                   // Minuto
+        entrega.tm_sec = 0;                    // Segundo
+
+        // Converte as datas em timestamps
+        time_t retiradaTimestamp = mktime(&retirada);
+        time_t entregaTimestamp = mktime(&entrega);
+
+        // Verifica se a data de entrega é anterior à data de retirada
+       if(retirada.tm_year > entrega.tm_year)
+       {
+           cout << "\n\tOps, Data de entrega invalida!...\n";
+           pause();
+           return false;
+       }
+       else
+       {
+           if(retirada.tm_mon > entrega.tm_mon)
+           {
+               cout << "\n\tOps, Data de entrega invalida!...\n";
+               pause();
+               return false;
+           }
+           else
+           {
+               if(retirada.tm_mday > entrega.tm_mday)
+               {
+                   cout << "\n\tOps, Data de entrega invalida!...\n";
+                   pause();
+                   return false;
+               }
+           }
+       }
+
+        // Calcula a diferença entre as datas
+        double diff = difftime(entregaTimestamp, retiradaTimestamp);
+
+        // Converte a diferença de segundos para dias
+        diff = diff / (60 * 60 * 24);
+
+        // Mostra a diferença em dias
+        cout << "\n\tDiferença em dias: " << diff << endl;
+        pause();
+
+        if(diff > 30)
+        {
+            cout << "\n\tOps, Data de entrega invalida!...\n";
+            pause();
+            return false;
+        }
+
+        cout << "\n\tData de entrega valida!...\n";
+        pause();
+        return true;
+
+    }
+
     string diaDaSemana()
     {
 
@@ -194,9 +303,9 @@ struct Veiculo
     string placa;
     string modelo;
     string cor;
+    string lojaRetirada;
     MinhaData dataHoraRetirada;
     MinhaData dataHoraEntrega;
-    string lojaRetirada;
 
     void lerVeiculo(int i)
     {
@@ -207,34 +316,56 @@ struct Veiculo
              << endl;
 
         cout << "\t" << i << "º Veiculo";
+        cout << "\n\tInforme o renavan do veículo: ";
+        getline(cin, renavan);
+
         cout << "\n\tInforme o modelo do veículo: ";
-        cin >> modelo;
+        getline(cin, modelo);
 
         cout << "\n\tInforme a cor do veículo: ";
-        cin >> cor;
+        getline(cin, cor);
 
         cout << "\n\tInforme a placa do veiculo: ";
-        cin >> placa;
-        cin.get();
+        getline(cin, placa);
+
+        limparTela();
+        cout << "\n\t==========DATA DE REGISTRO==========\n";
+
+        dataHoraRetirada.lerDataRetirada();
+
+        do
+        {
+            limparTela();
+            cout << "\n\t==========DATA DE ENTREGA==========\n";
+
+            dataHoraEntrega.lerDataEntrega();
+
+        } while (!dataHoraEntrega.validaDataDeEntrega(dataHoraRetirada, dataHoraEntrega));
+
+        limparTela();
+        cout << "\n\t==========LOJA DE RETIRADA==========\n";
+
+        cout << "\n\tInforme a loja de retirada: ";
+        getline(cin, lojaRetirada);
 
         limparTela();
         cout << "\n\tVeiculo cadastrado com sucesso!...\n";
         pause();
-
-        cout << "\n\t==========DATA DE REGISTRO==========\n";
-
-        dataHoraRetirada.lerData();
     }
 
     void mostraDadosVeiculo(int i)
     {
         cout << "\n\t" << i << "º VEICULO";
-        cout << "\n\tModelo do Carro: " << modelo << endl;
+        cout << "\n\tRenavan do veículo: " << renavan << endl;
+        cout << "\tModelo do Carro: " << modelo << endl;
         cout << "\tCor do veiculo: " << cor << endl;
         cout << "\tPlaca do veiculo: " << placa << endl;
-        cout << "\tData de Registro: ";
+        cout << "\tData de Retirada: ";
         dataHoraRetirada.mostraData();
-        cout << "\n\t========================================\n";
+        cout << "\n\tData de Entrega: ";
+        dataHoraEntrega.mostraData();
+        cout << "\n\tLoja de Retirada: " << lojaRetirada << endl;
+        cout << "\t========================================\n";
     }
 };
 
@@ -273,7 +404,7 @@ struct Cliente
         cout << "\tData de Nascimento: ";
         dataNascimento.mostraData();
         cout << "\n\tIdade do cliente: " << dataNascimento.anosCompletos() << endl;
-        cout << "\n\t========================================\n";
+        cout << "\t========================================\n";
     }
 
     void listarClientesComCarroLocado(int j)
@@ -286,7 +417,7 @@ struct Cliente
         cout << "\tCPF do Cliente: " << cpf << endl;
         cout << "\tData de Nascimento: ";
         dataNascimento.mostraData();
-        cout << "\n\t========================================\n";
+        cout << "\n\tIdade do cliente: " << dataNascimento.anosCompletos() << endl;
 
         for (auto it = veiculos.begin(); it != veiculos.end(); it++, i++)
         {
@@ -424,7 +555,7 @@ struct Cliente
                     cout << "\tCpf: " << it->cpf << endl;
                     cout << "\tIdade: " << it->dataNascimento.anosCompletos() << endl;
                     cout << "\tCliente encontrado!...\n";
-                    pause();
+
                     cout << "\n\tOps, Cliente menor de idade!...\n";
                     pause();
                     return;
@@ -442,61 +573,45 @@ struct Cliente
     }
 };
 
-int menu();
+int menuPrincipal();
 
-void sistemaDeLocacao();
+int menuEscolha();
 
-void cadastraCliente(vector<Cliente> &listCliente);
+void sistemaDeGestaoLocacaoDeVeiculos();
 
-void cadastraVeiculo(Cliente &cliente);
+void cadastrarCliente(vector<Cliente> &listCliente);
+
+void cadastrarVeiculo(Cliente &cliente);
+
+void listarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos);
 
 void listarClientes(vector<Cliente> &listCliente);
 
 void listarVeiculos(Cliente listVeiculos);
 
-void alterarAndBucarCliente(vector<Cliente> &listCliente);
+void alterarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos);
+
+void alterarCliente(vector<Cliente> &listCliente);
+
+void alterarVeiculo(Cliente &listVeiculos);
+
+void removerClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos);
 
 void removerCliente(vector<Cliente> &listCliente);
 
+void removerVeiculo(Cliente &listVeiculos);
+
+void localizarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos);
+
 void localizarCliente(vector<Cliente> &listCliente);
+
+void localizarVeiculo(Cliente &listVeiculos);
+
+void locarVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos);
 
 int main()
 {
-    sistemaDeLocacao();
-}
-
-int menu()
-{
-    limparTela();
-    MinhaData dataAtual;
-    int opcao = 0;
-
-    do
-    {
-        dataAtual.mostraDataAtual();
-        cout << "\t===========MENU===========";
-        cout << "\n\t[1] - INCLUIR:";
-        cout << "\n\t[2] - EXCLUIR:";
-        cout << "\n\t[3] - ALTERAR:";
-        cout << "\n\t[4] - LISTAR:";
-        cout << "\n\t[5] - LOCALIZAR:";
-        cout << "\n\t[6] - LISTAR VEICULOS:";
-        cout << "\n\t[7] - LOCAR VEICULO:";
-        cout << "\n\t[0] - SAIR";
-        cout << "\n\tENTRADA ->  ";
-        cin >> opcao;
-        cin.get();
-
-        if (opcao > 7 || opcao < 0)
-        {
-            limparTela();
-            cout << "Ops, escolha invalida!...\n";
-            pause();
-        }
-
-    } while (opcao > 7 || opcao < 0);
-
-    return opcao;
+    sistemaDeGestaoLocacaoDeVeiculos();
 }
 
 void pause()
@@ -515,58 +630,140 @@ void limparTela()
 #endif
 }
 
-void sistemaDeLocacao()
+int menuPrincipal()
+{
+    limparTela();
+    MinhaData dataAtual;
+    int opcao = 0;
+
+    do
+    {
+        dataAtual.mostraDataAtual();
+        cout << "\t===========MENU===========";
+        cout << "\n\t[1] - INCLUIR:";
+        cout << "\n\t[2] - EXCLUIR:";
+        cout << "\n\t[3] - ALTERAR:";
+        cout << "\n\t[4] - LISTAR:";
+        cout << "\n\t[5] - LOCALIZAR:";
+        cout << "\n\t[6] - LOCAR VEICULO:";
+        cout << "\n\t[0] - SAIR";
+        cout << "\n\tENTRADA ->  ";
+        cin >> opcao;
+        cin.get();
+
+        if (opcao > 6 || opcao < 0)
+        {
+            limparTela();
+            cout << "Ops, escolha invalida!...\n";
+            pause();
+        }
+
+    } while (opcao > 6 || opcao < 0);
+
+    return opcao;
+}
+
+int menuEscolha()
+{
+    MinhaData dataAtual;
+    int opcao = 0;
+
+    do
+    {
+        limparTela();
+        dataAtual.mostraDataAtual();
+        cout << "\t======MENU DE ESCOLHA======";
+        cout << "\n\t[1] - CLIENTE:";
+        cout << "\n\t[2] - VEICULO:";
+        cout << "\n\t[0] - SAIR";
+        cout << "\n\tENTRADA ->  ";
+        cin >> opcao;
+        cin.get();
+
+        if (opcao > 2 || opcao < 0)
+        {
+            limparTela();
+            cout << "Ops, escolha invalida!...\n";
+            pause();
+        }
+
+    } while (opcao > 2 || opcao < 0);
+
+    if (opcao == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        if (opcao == 1)
+        {
+            return 1;
+        }
+        if (opcao == 2)
+        {
+            return 2;
+        }
+    }
+    return 0;
+}
+
+void sistemaDeGestaoLocacaoDeVeiculos()
 {
     vector<Cliente> listCliente;
     Cliente cliente;
     int escolha = 1;
+    int clienteOuVeiculo = 0;
 
     do
     {
-        switch (menu())
+        switch (menuPrincipal())
         {
 
         case 1:
 
-            cadastraCliente(listCliente);
-
+            clienteOuVeiculo = menuEscolha();
+            if (clienteOuVeiculo == 1)
+            {
+                cadastrarCliente(listCliente);
+            }
+            else
+            {
+                if (clienteOuVeiculo == 2)
+                {
+                    cadastrarVeiculo(cliente);
+                }
+                else
+                {
+                    limparTela();
+                    cout << "\n\tMenu encerrado com sucesso!...";
+                    pause();
+                }
+            }
             break;
 
         case 2:
 
-            // cadastraVeiculo(cliente);
-            removerCliente(listCliente);
-
+            removerClienteOuVeiculo(listCliente, cliente);
             break;
 
         case 3:
 
-            alterarAndBucarCliente(listCliente);
-
+            alterarClienteOuVeiculo(listCliente, cliente);
             break;
 
         case 4:
 
-            listarClientes(listCliente);
-
+            listarClienteOuVeiculo(listCliente, cliente);
             break;
 
         case 5:
 
-            localizarCliente(listCliente);
-
+            localizarClienteOuVeiculo(listCliente, cliente);
             break;
 
         case 6:
 
-            listarVeiculos(cliente);
-
-            break;
-
-        case 7:
-
-            cliente.locarVeiculo(listCliente);
-
+            locarVeiculo(listCliente, cliente);
             break;
 
         case 0:
@@ -582,7 +779,7 @@ void sistemaDeLocacao()
     } while (escolha != 0);
 }
 
-void cadastraCliente(vector<Cliente> &listCliente)
+void cadastrarCliente(vector<Cliente> &listCliente)
 {
     int i = 0;
     Cliente cliente;
@@ -590,12 +787,163 @@ void cadastraCliente(vector<Cliente> &listCliente)
     listCliente.push_back(cliente);
 }
 
-void cadastraVeiculo(Cliente &cliente)
+void cadastrarVeiculo(Cliente &cliente)
 {
     int i = 0;
     Veiculo veiculo;
     veiculo.lerVeiculo(i = cliente.veiculos.size() + 1);
     cliente.veiculos.push_back(veiculo);
+}
+
+void removerClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos)
+{
+    int clienteOuVeiculo = menuEscolha();
+
+    if (clienteOuVeiculo == 1)
+    {
+        if (listCliente.empty())
+        {
+            cout << "\n\tNão há clientes cadastrados!...\n";
+            pause();
+        }
+        else
+        {
+            removerCliente(listCliente);
+        }
+    }
+    else
+    {
+        if (clienteOuVeiculo == 2)
+        {
+            if (listVeiculos.veiculos.empty())
+            {
+                cout << "\n\tNão há veiculos cadastrados!...\n";
+                pause();
+            }
+            else
+            {
+                removerVeiculo(listVeiculos);
+            }
+        }
+        else
+        {
+            limparTela();
+            cout << "\n\tMenu encerrado com sucesso!...";
+            pause();
+        }
+    }
+}
+
+void removerCliente(vector<Cliente> &listCliente)
+{
+    limparTela();
+    MinhaData dataAtual;
+    dataAtual.mostraDataAtual();
+    string cpf;
+    int i = 1;
+
+    cout << "\t===============REMOVER CLIENTE============\n";
+
+    if (listCliente.empty())
+    {
+        cout << "\n\tNão há clientes cadastrados!...\n";
+        pause();
+        return;
+    }
+    cout << "\n\tInforme o CPF para remoção: ";
+    getline(cin, cpf);
+
+    for (auto it = listCliente.begin(); it != listCliente.end(); ++it, i++)
+    {
+        if (it->cpf == cpf)
+        {
+            listCliente.erase(it);
+            cout << "\n\tCliente removido com sucesso!...\n";
+            pause();
+            return;
+        }
+    }
+
+    limparTela();
+    cout << "\tOps, Cliente não encontrado!...\n";
+    pause();
+}
+
+void removerVeiculo(Cliente &listVeiculos)
+{
+    limparTela();
+    MinhaData dataAtual;
+    Veiculo veiculo;
+    dataAtual.mostraDataAtual();
+    string placa;
+    int i = 1;
+
+    cout << "\t===============REMOVER CLIENTE============\n";
+
+    if (listVeiculos.veiculos.empty())
+    {
+        cout << "\n\tNão há veiculos cadastrados!...\n";
+        pause();
+        return;
+    }
+    cout << "\n\tInforme a placa para remoção: ";
+    getline(cin, placa);
+
+    for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+    {
+        if (it->placa == placa)
+        {
+            it->mostraDadosVeiculo(i);
+            listVeiculos.veiculos.erase(it);
+            cout << "\n\tCliente removido com sucesso!...\n";
+            pause();
+            return;
+        }
+    }
+
+    limparTela();
+    cout << "\tOps, Cliente não encontrado!...\n";
+    pause();
+}
+
+void listarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos)
+{
+    int clienteOuVeiculo = 0;
+
+    clienteOuVeiculo = menuEscolha();
+    if (clienteOuVeiculo == 1)
+    {
+        if (listCliente.empty())
+        {
+            cout << "\n\tNão há clientes cadastrados!...\n";
+            pause();
+        }
+        else
+        {
+            listarClientes(listCliente);
+        }
+    }
+    else
+    {
+        if (clienteOuVeiculo == 2)
+        {
+            if (listVeiculos.veiculos.empty())
+            {
+                cout << "\n\tNão há veiculos cadastrados!...\n";
+                pause();
+            }
+            else
+            {
+                listarVeiculos(listVeiculos);
+            }
+        }
+        else
+        {
+            limparTela();
+            cout << "\n\tMenu encerrado com sucesso!...";
+            pause();
+        }
+    }
 }
 
 void listarClientes(vector<Cliente> &listCliente)
@@ -689,7 +1037,7 @@ void listarClientes(vector<Cliente> &listCliente)
 
             limparTela();
             dataAtual.mostraDataAtual();
-            cout << "\t==========LISTA DE CLIENTES COM CARRO LOCADO===========\n";
+            cout << "\t=========LISTA DE CLIENTES COM CARRO LOCADO==========";
 
             for (auto it = listCliente.begin(); it != listCliente.end(); it++, i++)
             {
@@ -711,7 +1059,7 @@ void listarVeiculos(Cliente listVeiculos)
     dataAtual.mostraDataAtual();
 
     int i = 1;
-    cout << "\t==========LISTA DE VEICULOS===========\n";
+    cout << "\t==========LISTA DE VEICULOS===========";
 
     if (listVeiculos.veiculos.empty())
     {
@@ -727,13 +1075,52 @@ void listarVeiculos(Cliente listVeiculos)
     pause();
 }
 
-void alterarAndBucarCliente(vector<Cliente> &listCliente)
+void alterarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos)
+{
+    int clienteOuVeiculo = menuEscolha();
+
+    if (clienteOuVeiculo == 1)
+    {
+        if (listCliente.empty())
+        {
+            cout << "\n\tNão há clientes cadastrados!...\n";
+            pause();
+        }
+        else
+        {
+            alterarCliente(listCliente);
+        }
+    }
+    else
+    {
+        if (clienteOuVeiculo == 2)
+        {
+            if (listVeiculos.veiculos.empty())
+            {
+                cout << "\n\tNão há veiculos cadastrados!...\n";
+                pause();
+            }
+            else
+            {
+                alterarVeiculo(listVeiculos);
+            }
+        }
+        else
+        {
+            limparTela();
+            cout << "\n\tMenu encerrado com sucesso!...";
+            pause();
+        }
+    }
+}
+
+void alterarCliente(vector<Cliente> &listCliente)
 {
     limparTela();
     MinhaData dataAtual;
     string cpf;
     int opcao = 0;
-    int i = 1;
+    int escolha = 0;
 
     if (listCliente.empty())
     {
@@ -745,6 +1132,10 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
 
     do
     {
+        int i = 1;
+        limparTela();
+        dataAtual.mostraDataAtual();
+        cout << "\t==========MENU ALTERAR===========\n";
         cout << "\n\t[1] - ALTERAR NOME:";
         cout << "\n\t[2] - ALTERAR CNH:";
         cout << "\n\t[3] - ALTERAR CPF:";
@@ -752,6 +1143,7 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
         cout << "\n\t[0] - SAIR";
         cout << "\n\tENTRADA ->  ";
         cin >> opcao;
+        escolha = opcao;
         cin.get();
 
         if (opcao == 1)
@@ -766,7 +1158,7 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
                 {
                     limparTela();
                     dataAtual.mostraDataAtual();
-                    cout << "\t==========CLIENTE ENCONTRADO===========\n";
+                    cout << "\t==========CLIENTE ENCONTRADO===========";
                     it->mostraDadosCliente(i);
                     pause();
 
@@ -786,12 +1178,20 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
                         cin.get();
 
                         limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========CLIENTE ALTERADO (NOME)==========";
                         it->mostraDadosCliente(i);
                         cout << "\n\tNome alterado com sucesso!...";
+                        cpf = "0";
                         pause();
-                        opcao = 5;
                     }
                 }
+            }
+            if (cpf != "0")
+            {
+                limparTela();
+                cout << "\tOps, Cliente não encontrado!...\n";
+                pause();
             }
         }
         if (opcao == 2)
@@ -806,7 +1206,7 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
                 {
                     limparTela();
                     dataAtual.mostraDataAtual();
-                    cout << "\t==========CLIENTE ENCONTRADO===========\n";
+                    cout << "\t==========CLIENTE ENCONTRADO===========";
                     it->mostraDadosCliente(i);
                     pause();
 
@@ -826,59 +1226,626 @@ void alterarAndBucarCliente(vector<Cliente> &listCliente)
                         cin.get();
 
                         limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\n\t=========CLIENTE ALTERADO (CNH)=========\n";
                         it->mostraDadosCliente(i);
                         cout << "\n\tCNH alterada com sucesso!...";
+                        cpf = "0";
                         pause();
-                        opcao = 5;
                     }
                 }
             }
+            if (cpf != "0")
+            {
+                limparTela();
+                cout << "\tOps, Cliente não encontrado!...\n";
+                pause();
+            }
         }
 
-    } while (opcao < 0 && opcao > 4);
+        if (opcao == 3)
+        {
+            limparTela();
+            cout << "\tInforme o CPF para consulta: ";
+            getline(cin, cpf);
 
-    limparTela();
-    dataAtual.mostraDataAtual();
-    cout << "\tOps, Cliente não encontrado!...\n";
-    pause();
+            for (auto it = listCliente.begin(); it != listCliente.end(); ++it, i++)
+            {
+                if (it->cpf == cpf)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========CLIENTE ENCONTRADO===========";
+                    it->mostraDadosCliente(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar CPF desse cliente?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+
+                        cout << "\n\tInforme o CPF do cliente para correção: ";
+                        cin >> it->cpf;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t==========CLIENTE ALTERADO (CPF)==========";
+                        it->mostraDadosCliente(i);
+                        cout << "\n\tCPF alterado com sucesso!...";
+                        cpf = "0";
+                        pause();
+                    }
+                }
+            }
+            if (cpf != "0")
+            {
+                limparTela();
+                cout << "\tOps, Cliente não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 4)
+        {
+
+            limparTela();
+            cout << "\tInforme o CPF para consulta: ";
+            getline(cin, cpf);
+
+            for (auto it = listCliente.begin(); it != listCliente.end(); ++it, i++)
+            {
+                if (it->cpf == cpf)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========CLIENTE ENCONTRADO===========";
+                    it->mostraDadosCliente(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a idade de nascimento desse cliente?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+
+                        cout << "\n\tInforme a idade de nascimento do cliente para correção:\n";
+                        it->dataNascimento.lerData();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t========CLIENTE ALTERADO (DATA NASCIMENTO)=========";
+                        it->mostraDadosCliente(i);
+                        cout << "\n\tIdade de nascimento alterada com sucesso!...";
+                        cpf = "0";
+                        pause();
+                    }
+                }
+            }
+            if (cpf != "0")
+            {
+                limparTela();
+                cout << "\tOps, Cliente não encontrado!...\n";
+                pause();
+            }
+        }
+        if (escolha > 4 || escolha < 0)
+        {
+
+            limparTela();
+            cout << "\tOps, opção invalida!...\n";
+            pause();
+        }
+
+    } while (escolha != 0);
 }
 
-void removerCliente(vector<Cliente> &listCliente)
+void alterarVeiculo(Cliente &listVeiculos)
+{
+
+    limparTela();
+    MinhaData dataAtual;
+    string placa;
+    int opcao = 0;
+    int escolha = 0;
+
+    if (listVeiculos.veiculos.empty())
+    {
+        cout << "\t==========PESQUISAR VEICULO===========\n";
+        cout << "\n\tNão há veiculos cadastrados!...\n";
+        pause();
+        return;
+    }
+
+    do
+    {
+        int i = 1;
+        limparTela();
+        dataAtual.mostraDataAtual();
+        cout << "\t==========MENU ALTERAR===========\n";
+        cout << "\n\t[1] - ALTERAR RENAVAN:";
+        cout << "\n\t[2] - ALTERAR MODELO:";
+        cout << "\n\t[3] - ALTERAR COR:";
+        cout << "\n\t[4] - ALTERAR PLACA:";
+        cout << "\n\t[5] - ALTERAR DATA DE RETIRADA:";
+        cout << "\n\t[6] - ALTERAR DATA DE ENTREGA:";
+        cout << "\n\t[7] - ALTERAR LOJA DE RETIRADA:";
+        cout << "\n\t[0] - SAIR";
+        cout << "\n\tENTRADA ->  ";
+        cin >> opcao;
+        escolha = opcao;
+        cin.get();
+
+        if (opcao == 1)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar o renavan desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme o renavan do veiculo para correção: ";
+                        cin >> it->renavan;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (RENAVAN)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tRenavan alterado com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 2)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar o modelo desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme o modelo do veiculo para correção: ";
+                        cin >> it->modelo;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (MODELO)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tModelo alterado com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 3)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a cor desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme a cor do veiculo para correção: ";
+                        cin >> it->cor;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (COR)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tCor alterada com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 4)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a placa desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme a placa do veiculo para correção: ";
+                        cin >> it->placa;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (PLACA)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tPlaca alterada com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 5)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a data de retirada desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme a data de retirada do veiculo para correção:\n";
+                        it->dataHoraEntrega.lerDataRetirada();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (DATA RETIRADA)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tData de retirada alterada com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 6)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a data de entrega desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme a data de entrega do veiculo para correção:\n";
+                        it->dataHoraEntrega.lerDataEntrega();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (DATA ENTREGA)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tData de entrega alterada com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+
+        if (opcao == 7)
+        {
+            limparTela();
+            cout << "\tInforme a placa para consulta: ";
+            getline(cin, placa);
+
+            for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+            {
+                if (it->placa == placa)
+                {
+                    limparTela();
+                    dataAtual.mostraDataAtual();
+                    cout << "\t==========VEICULO ENCONTRADO===========";
+                    it->mostraDadosVeiculo(i);
+                    pause();
+
+                    do
+                    {
+                        cout << "\n\tDeseja alterar a loja de retirada desse veiculo?\n\t[1] SIM\n\t[0] NÃO\n\tENTRADA ->  ";
+                        cin >> opcao;
+                        cin.get();
+
+                    } while (opcao < 0 && opcao > 1);
+
+                    if (opcao == 1)
+                    {
+                        cout << "\n\tInforme a loja de retirada do veiculo para correção: ";
+                        cin >> it->lojaRetirada;
+                        cin.get();
+
+                        limparTela();
+                        dataAtual.mostraDataAtual();
+                        cout << "\t=========VEICULO ALTERADO (LOJA RETIRADA)==========";
+                        it->mostraDadosVeiculo(i);
+                        cout << "\n\tLoja de retirada alterada com sucesso!...";
+                        placa = "0";
+                        pause();
+                    }
+                }
+            }
+            if (placa != "0")
+            {
+                limparTela();
+                cout << "\tOps, Veiculo não encontrado!...\n";
+                pause();
+            }
+        }
+        if (escolha > 7 || escolha < 0)
+        {
+            limparTela();
+            cout << "\tOps, opção invalida!...\n";
+            pause();
+        }
+
+    } while (escolha != 0);
+}
+
+void localizarClienteOuVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos)
+{
+    int clienteOuVeiculo = menuEscolha();
+
+    if (clienteOuVeiculo == 1)
+    {
+        if (listCliente.empty())
+        {
+            cout << "\n\tNão há clientes cadastrados!...\n";
+            pause();
+        }
+        else
+        {
+            localizarCliente(listCliente);
+        }
+    }
+    else
+    {
+        if (clienteOuVeiculo == 2)
+        {
+            if (listVeiculos.veiculos.empty())
+            {
+                cout << "\n\tNão há veiculos cadastrados!...\n";
+                pause();
+            }
+            else
+            {
+                localizarVeiculo(listVeiculos);
+            }
+        }
+        else
+        {
+            limparTela();
+            cout << "\n\tMenu encerrado com sucesso!...";
+            pause();
+        }
+    }
+}
+
+void localizarCliente(vector<Cliente> &listCliente)
 {
     limparTela();
     MinhaData dataAtual;
-    dataAtual.mostraDataAtual();
     string cpf;
     int i = 1;
 
-    cout << "\t===============REMOVER CLIENTE============\n";
-
     if (listCliente.empty())
     {
+
+        cout << "\t==========PESQUISAR CLIENTE===========";
         cout << "\n\tNão há clientes cadastrados!...\n";
         pause();
         return;
     }
-    cout << "\n\tInforme o CPF para remoção: ";
+
+    cout << "\tInforme o CPF para consulta: ";
     getline(cin, cpf);
 
     for (auto it = listCliente.begin(); it != listCliente.end(); ++it, i++)
     {
         if (it->cpf == cpf)
         {
-            listCliente.erase(it);
-            cout << "\n\tCliente removido com sucesso!...\n";
+            limparTela();
+            dataAtual.mostraDataAtual();
+            cout << "\t==========CLIENTE ENCONTRADO===========";
+            it->mostraDadosCliente(i);
             pause();
             return;
         }
     }
 
     limparTela();
+    dataAtual.mostraDataAtual();
     cout << "\tOps, Cliente não encontrado!...\n";
     pause();
 }
 
-void localizarCliente(vector<Cliente> &listCliente)
+void localizarVeiculo(Cliente &listVeiculos)
+{
+
+    limparTela();
+    MinhaData dataAtual;
+    string placa;
+    int i = 1;
+
+    if (listVeiculos.veiculos.empty())
+    {
+        cout << "\t==========PESQUISAR VEICULO===========\n";
+        cout << "\n\tNão há veiculos cadastrados!...\n";
+        pause();
+        return;
+    }
+
+    cout << "\tInforme a placa para consulta: ";
+    getline(cin, placa);
+
+    for (auto it = listVeiculos.veiculos.begin(); it != listVeiculos.veiculos.end(); ++it, i++)
+    {
+        if (it->placa == placa)
+        {
+            limparTela();
+            dataAtual.mostraDataAtual();
+            cout << "\t==========VEICULO ENCONTRADO===========";
+            it->mostraDadosVeiculo(i);
+            pause();
+            return;
+        }
+    }
+
+    limparTela();
+    dataAtual.mostraDataAtual();
+    cout << "\tOps, Veiculo não encontrado!...\n";
+    pause();
+}
+
+void locarVeiculo(vector<Cliente> &listCliente, Cliente &listVeiculos)
 {
     limparTela();
     MinhaData dataAtual;
